@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CurrenciesService } from './currencies.service';
 import { Currencies } from './currencies.entity';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
@@ -16,5 +25,10 @@ export class CurrenciesController {
   @UsePipes(ValidationPipe)
   async createCurrency(@Body() createCurrencyDto: CreateCurrencyDto): Promise<Currencies> {
     return await this.currenciesService.createCurrency(createCurrencyDto);
+  }
+
+  @Delete('/:currency')
+  async deleteCurrency(@Param('currency') currency: string): Promise<void> {
+    return await this.currenciesService.deleteCurrency(currency);
   }
 }
