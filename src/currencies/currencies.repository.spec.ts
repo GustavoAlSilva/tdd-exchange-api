@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CurrenciesRepository } from './currencies.repository';
-import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { Currencies } from './currencies.entity';
 
 describe('CurrenciesRepository', () => {
@@ -31,8 +31,9 @@ describe('CurrenciesRepository', () => {
 
     it('should be throw findOne returns empty', async () => {
       repository.findOne = jest.fn().mockReturnValue(undefined);
-      await expect(repository.getCurrency('USD')).rejects.toThrow(
-        new InternalServerErrorException(),
+      const currency = 'USD';
+      await expect(repository.getCurrency(currency)).rejects.toThrow(
+        new NotFoundException(`The currency ${currency} not found.`),
       );
     });
 
